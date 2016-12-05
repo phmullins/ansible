@@ -1,0 +1,85 @@
+# PHP7 on Debian using Dotdeb
+# Author: Patrick H. Mullins (pmullins11@mac.com)
+# Created: 2016-12-03 - Modifed: 2016-12-03
+# Required: Ansible 2.0
+
+---
+- name: Install PHP7 and Nginx
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+    # Copy dotdeb repository file to server.
+    - name: Copy dotdeb repository file to server
+      copy: src=files/dotdeb.list dest=/etc/apt/sources.list.d/dotdeb.list
+    # Download the dotdeb GPG key to the server.
+    - name: Download the dotdeb GPG key.
+      get_url:
+        url: "http://www.dotdeb.org/dotdeb.gpg"
+        dest: /tmp/dotdeb.gpg
+    # Add the dotdeb GPG key to the system.
+    - name: Add the dotdeb GPG key to the system.
+      shell: apt-key add /tmp/dotdeb.gpg
+    # Install Nginx web server.
+    - name: Install Nginx webserver.
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+    # Copy virtual host config file to server
+    - name: Copy virtual host config file
+      copy: src=files/php.conf dest=/etc/nginx/sites-available/php.conf
+    # Copy Nginx configuration to server
+    - name: Copy Nginx configuration file
+      copy: src=files/nginx.conf dest=/etc/nginx/nginx.conf
+    # Copy index.html file to server
+    - name: Copy index.html file to server
+      copy: src=files/index.html dest=/var/www/html/index.html
+    # Unlink default Nginx host file
+    - name: Unlink the default Nginx host file.
+      shell: unlink /etc/nginx/sites-enabled/default
+    # Create a symlink to the new php.conf virtual host file
+    - name: Symlink the new Nginx virtual host file.
+      file:
+        src: /etc/nginx/sites-available/php.conf
+        dest: /etc/nginx/sites-enabled/php.conf
+        state: link
+    # Install PHP7 packages
+    - name: Install PHP7 packages
+      sudo: yes
+      when: ansible_os_family == "Debian"
+      apt:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - php7.0-cli
+        - php7.0-curl
+        - php7.0-dev
+        - php7.0-fpm
+        - php7.0-xml
+        - php7.0-pgsql
+        - php7.0-mysql
+        - php7.0-mcrypt
+        - php7.0-mbstring
+        - php7.0-opcache
+    # Copy ww.conf configuration file to the server
+    - name: Copy ww.conf configuration file to the server
+      copy: src=files/www.conf dest=/etc/php/7.0/fpm/pool.d/www.conf
+    # Copy php configuration file to the server
+    - name: Copy php.ini configuration file to the server
+      copy: src=files/php.ini dest=/etc/php/7.0/fpm/php.ini
+    # Copy phpinfo.php file to server
+    - name: Copy phpinfo.php file to server
+      copy: src=files/phpinfo.php dest=/var/www/html/phpinfo.php
+    # Send a notification to the Nginx and PHP7-FPM service handlers
+      notify:
+        - restart nginx
+        - restart php7.0-fpm
+  handlers:
+    # Restart Nginx service
+    - name: restart nginx
+      service: name=nginx state=restarted
+    # Restart php7.0-fpm service
+    - name: restart php7.0-fpm
+      service: name=php7.0-fpm state=restarted
