@@ -4,6 +4,7 @@ Ansible plays, playbooks, and roles.
 
 ## Scripts
 
+- [Docker](https://github.com/phmullins/ansible/tree/master/ansible_docker) - Installs Docker on Debian/Ubunutu systems.
 - [Nginx + PHP 7](https://github.com/phmullins/ansible/tree/master/ansible_nginx_php7) - Playbook that installs Nginx and PHP 7.
 
 ## Author
