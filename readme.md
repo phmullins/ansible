@@ -1,6 +1,6 @@
 # Ansible Playbooks
 
-Ansible plays, playbooks, and roles for Debian/Ubunutu systems.
+Ansible plays, playbooks, and roles for Debian/Ubuntu systems.
 
 ## Scripts
 
