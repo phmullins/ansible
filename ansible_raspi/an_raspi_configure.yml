@@ -1,0 +1,42 @@
+# Setting up and optimizing a Raspberry Pi
+# Author: Patrick H. Mullins (pmullins11@mac.com)
+# Created: 2017-03-02 - Modifed: 2017-03-02
+# Required: Ansible 2.0
+
+---
+- name: Setting up and optimizing a Raspberry Pi
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+    - name: Installing rpi-update
+      apt:
+        name: rpi-update
+        state: present
+        update_cache: yes
+    - name: Installing .bash_aliases
+      copy: src=source/.bash_aliases dest=/home/pi/.bash_aliases
+    - name: Installing .bashrc
+      copy: src=source/.bashrc dest=/home/pi/.bashrc
+    - name: Installing .hushlogin
+      copy: src=source/.hushlogin dest=/home/pi/.hushlogin
+    - name: Installing .gitconfig
+      copy: src=source/.gitconfig dest=/home/pi/.gitconfig
+    - name: Installing .gitignore
+      copy: src=source/.gitignore dest=/home/pi/.gitignore
+    - name: Installing .profile
+      copy: src=source/.profile dest=/home/pi/.profile
+    - name: Installing .wgetrc
+      copy: src=source/.wgetrc dest=/home/pi/.wgetrc
+    - name: Installing cmdline.txt
+      copy: src=source/cmdline.txt dest=/boot/cmdline.txt
+    - name: Installing config.txt
+      copy: src=source/config.txt dest=/boot/config.txt
+    - name: Installing dphys-swapfile
+      copy: src=source/dphys-swapfile dest=/etc/dphys-swapfile
+    - name: Installing sshd_config
+      copy: src=source/sshd_config dest=/etc/ssh/sshd_config
+    - name: Installing localtime
+      copy: src=source/localtime dest=/etc/localtime
+    

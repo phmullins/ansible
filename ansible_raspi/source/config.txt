@@ -1,0 +1,17 @@
+# For more options and information see
+# http://www.raspberrypi.org/documentation/configuration/config-txt.md
+# Some settings may impact device functionality. See link above for details
+
+# Bypass the rainbow splash screen on boot
+disable_splash=1
+
+# Run CPU at max defaults which are arm_freq=1200 and core_freq=400.
+force_turbo=1
+
+# Avoid SD card corruption when force_turbo is enabled.
+boot_delay=1
+
+core_freq=500
+sdram_freq=500
+over_voltage=2
+gpu_mem=4
