@@ -8,8 +8,6 @@ The only thing that needs to be changed before running the play is the `hosts` f
 $ ansible-playbook an_raspi_configure.yml -i hosts.txt
 ```
 
-Once finished, open the IP in a web browser and test to make sure Nginx and PHP are running properly.
-
 ## Author
 Created by [Patrick H. Mullins](http://www.pmullins.net). You can find me on  [Twitter](https://twitter.com/phmullins) and on [Telegram](https://telegram.org/) as @pmullins.
 
