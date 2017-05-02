@@ -35,8 +35,6 @@
       copy: src=source/config.txt dest=/boot/config.txt
     - name: Installing dphys-swapfile
       copy: src=source/dphys-swapfile dest=/etc/dphys-swapfile
-    - name: Installing sshd_config
-      copy: src=source/sshd_config dest=/etc/ssh/sshd_config
     - name: Installing localtime
       copy: src=source/localtime dest=/etc/localtime
     
